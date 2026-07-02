@@ -32,4 +32,8 @@ class Transaction extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function getFormattedAmountAttribute() {
+    return 'R$ ' . number_format($this->amount, 2, ',', '.');
+    }
 }
