@@ -10,7 +10,7 @@ class TransactionController extends Controller
 {
     public function index()
     {
-        $transactions = auth()->user()->transactions()->with('category')->paginate(10);
+        $transactions = auth()->user()->transactions()->with('category')->latest('date')->paginate(10);
         return view('transactions.index', compact('transactions'));
     }
 
@@ -45,6 +45,8 @@ class TransactionController extends Controller
     {
         $transaction = auth()->user()->transactions()->findOrFail($id);
         
+        abort_if($transaction->user_id !== auth()->id(), 403);
+
         $data = $request->validate([
             'description' => 'required|string|max:255',
             'amount' => 'required|numeric',
@@ -60,6 +62,9 @@ class TransactionController extends Controller
     public function destroy($id)
     {
         $transaction = auth()->user()->transactions()->findOrFail($id);
+        
+        abort_if($transaction->user_id !== auth()->id(), 403);
+        
         $transaction->delete();
 
         return redirect()->route('transactions.index')->with('success', 'Transação deletada com sucesso!');
