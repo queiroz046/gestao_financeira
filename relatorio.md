@@ -1,4 +1,5 @@
 Contexto e Planejamento
+
 Contexto
 
 Objetivo da aplicação: Desenvolver uma plataforma web para controle financeiro pessoal, permitindo o registro e acompanhamento de receitas e despesas.
@@ -24,3 +25,15 @@ Tecnologias utilizadas: Laravel, Laravel Boost e ferramentas de IA (GitHub Copil
 Riscos: Inconsistências na validação de campos monetários gerados pela IA.
 
 Critérios de aceite: Sistema permite login, cadastra/lista transações associadas a categorias e roda localmente sem erros.
+
+Limitações da aplicação
+
+A aplicação, embora funcional para o controle financeiro básico, apresenta limitações como a ausência de gráficos interativos complexos, falta de exportação de dados (PDF/Excel) e a dependência de um ambiente de desenvolvimento configurado manualmente para execução local.
+
+Utilização da IA durante o desenvolvimento
+
+O uso de IA (Vibe Coding) foi fundamental para acelerar a estruturação dos CRUDs e a padronização visual. No entanto, foi necessário realizar intervenções manuais constantes para corrigir erros de lógica em cálculos monetários e garantir que as rotas respeitassem o middleware de autenticação, confirmando que a validação humana é indispensável no ciclo de desenvolvimento.
+
+Conclusão 
+
+O projeto permitiu consolidar os conhecimentos em Laravel e a aplicação prática de Skills para padronização de código. A experiência reforçou que ferramentas modernas como o Laravel Boost e IAs de programação aumentam a produtividade, desde que acompanhadas de uma compreensão profunda da arquitetura do framework e rigor nos testes de validação.
