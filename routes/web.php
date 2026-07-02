@@ -4,36 +4,36 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TransactionController;
 use Illuminate\Support\Facades\Route;
-use App\Models\Transaction;
 
-Route::get('/dashboard', function () {
-    $user = auth()->user();
-    
-    // Calcula totais
-    $receitas = $user->transactions()->whereHas('category', function($q) {
-        $q->where('type', 'receita');
-    })->sum('amount');
-    
-    $despesas = $user->transactions()->whereHas('category', function($q) {
-        $q->where('type', 'despesa');
-    })->sum('amount');
-
-    return view('dashboard', compact('receitas', 'despesas'));
-})->middleware(['auth', 'verified'])->name('dashboard');
-
+// Rota inicial redirecionando para o login
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Grupo de rotas que exigem autenticação
+Route::middleware(['auth', 'verified'])->group(function () {
+    
+    // Dashboard com a lógica de cálculo dos totais
+    Route::get('/dashboard', function () {
+        $user = auth()->user();
+        
+        $receitas = $user->transactions()->whereHas('category', function($q) {
+            $q->where('type', 'receita');
+        })->sum('amount');
+        
+        $despesas = $user->transactions()->whereHas('category', function($q) {
+            $q->where('type', 'despesa');
+        })->sum('amount');
 
-Route::middleware('auth')->group(function () {
+        return view('dashboard', compact('receitas', 'despesas'));
+    })->name('dashboard');
+
+    // Rotas de Perfil
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
+    // Recursos (CRUDs)
     Route::resource('categories', CategoryController::class);
     Route::resource('transactions', TransactionController::class);
 });
